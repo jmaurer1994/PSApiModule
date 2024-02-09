@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://plugin.powerschool.pearson.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" description="" name="PS Api Module - Test Client - DA" version="24.2.1" xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
+  <publisher name="">
+    <contact email="" />
+  </publisher>
+  <registration url="https://[external resource server hostname]:[port]/oauth2/registerClient">
+    <callback-data>jmaurer/psam-test</callback-data>
+  </registration>
+  <oauth allow-client-credential="true">
+  </oauth>
+  <access_request>
+    <field table="U_PS_API_TEST_TABLE" field="amount" access="FullAccess" />
+    <field table="U_PS_API_TEST_TABLE" field="name" access="FullAccess" />
+    <field table="U_PS_API_TEST_TABLE" field="description" access="FullAccess" />
+  </access_request>
+</plugin>
