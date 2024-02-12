@@ -4,6 +4,6 @@ define(function (require) {
     require('components/shared/index');
 
     // These will load and configure all your AngularJS code to be bootstrapped.
-    require('components/jmaurer/psapimoduletest/teachers/module');
-    require('components/jmaurer/psapimoduletest/teachers/controllers/index');
+    require('components/jmaurer/PSApiModuleTest/teachers/module');
+    require('components/jmaurer/PSApiModuleTest/teachers/controllers/index');
 });

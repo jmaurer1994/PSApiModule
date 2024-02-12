@@ -44,7 +44,7 @@ in a local libsql database.
 Inject the module and configure the provider in your AngularJS code:
 
 
-`psApiModule.config(['ExternalResourceServiceProvider', 'SchemaServiceProvider', function (ExternalResourceServiceProvider, SchemaServiceProvider) {
+`PSApiModule.config(['ExternalResourceServiceProvider', 'SchemaServiceProvider', function (ExternalResourceServiceProvider, SchemaServiceProvider) {
         
         //This should be the hostname and port (if not 443) of your external resource server.
         ExternalResourceServiceProvider.setOAuth2BaseUrl('https://[hostname]:[port]');

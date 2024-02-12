@@ -1,7 +1,7 @@
 'use strict';
 
 define(function (require) {
-    const module = require('components/jmaurer/PsApiModule/module');
+    const module = require('components/jmaurer/PSApiModule/module');
     const serviceId = 'SchemaService';
 
     const providerOptions = {

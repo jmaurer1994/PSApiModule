@@ -1,4 +1,4 @@
 'use strict';
 define(function (require) {
-    require('components/jmaurer/psapimoduletest/teachers/controllers/controller');
+    require('components/jmaurer/PSApiModuleTest/teachers/controllers/controller');
 });

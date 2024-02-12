@@ -1,6 +1,6 @@
 'use strict';
 define(function (require) {
-    const module = require('components/jmaurer/PsApiModule/module');
+    const module = require('components/jmaurer/PSApiModule/module');
     const serviceId = 'ExternalResourceService';
     const providerOptions = {
         oAuth2BaseUrl: '', //must match base url configured in Powerschool

@@ -3,5 +3,5 @@
 define(function (require) {
     const angular = require('angular')
 
-    return angular.module('psApiModule', []);
+    return angular.module('PSApiModule', []);
 });
