@@ -11,7 +11,6 @@ define(function (require) {
     }
 
     function Service(config, $http, ExternalResourceService) {
-        //https://support.powerschool.com/developer/#/page/table-resources
         function _makeRequest(requestOptions) {
             if (config.useExternalResourceService) {
                 return ExternalResourceService.makeExternalApiRequest(requestOptions);
@@ -23,32 +22,78 @@ define(function (require) {
             const urlParams = new URLSearchParams();
             for (const [key, param] of Object.entries(params)) {
                 if (param) {
-                    params.set(key, param);
+                    urlParams.set(key, param);
                 }
             }
 
             return urlParams;
         }
 
-        function makeCreateRecordRequest({ tableName, payload = {} }) {
+        function getFunctionalAreas() {
+            const requestOptions = {
+                method: 'GET',
+                url: `/ws/schema/area`
+            };
+
+            return _makeRequest(requestOptions);
+        }
+
+        function getTablesForFunctionalArea({ functionalArea }) {
+            if (!functionalArea) {
+                return Promise.reject("getTablesForFunctionalArea(): table name or record Id not supplied");
+            }
+
+            const requestOptions = {
+                method: 'GET',
+                url: `/ws/schema/area/${functionalArea}/table`
+            };
+
+            return _makeRequest(requestOptions);
+        }
+
+        function getAllTables() {
+            const requestOptions = {
+                method: 'GET',
+                url: `/ws/schema/table`
+            };
+
+            return _makeRequest(requestOptions);
+        }
+
+        function getTableMetadata({ tableName, expansion }) {
+            if (!tableName) {
+                return Promise.reject("getTableMetadata(): table name or record Id not supplied");
+            }
+
+            const params = _buildParams({
+                expansion
+            });
+
+            const requestOptions = {
+                method: 'GET',
+                url: `/ws/schema/table/${tableName}/metadata?${params}`
+            };
+
+            return _makeRequest(requestOptions);
+        }
+
+        function createRecord({ tableName, payload = {} }) {
             if (!tableName) {
                 return Promise.reject("makeRetrieveRecordsRequest(): table name not supplied");
             }
 
             const requestOptions = {
                 method: 'POST',
-                url: `/ws/schema/table/${tableName}?${params}`,
-                data: {
-                    tables: {}
-                }
+                url: `/ws/schema/table/${tableName}`,
+                data: payload
             }
 
-            data.tables[tableName] = payload;
+            requestOptions.data.tables[tableName] = payload;
 
             return _makeRequest(requestOptions);
         }
 
-        function makeRetrieveRecordRequest({ tableName, recordId, projection }) {
+        function retrieveRecord({ tableName, recordId, projection }) {
             if (!tableName || !recordId) {
                 return Promise.reject("makeRetrieveRecordRequest(): table name or record Id not supplied");
             }
@@ -63,13 +108,13 @@ define(function (require) {
 
             const requestOptions = {
                 method: 'GET',
-                url: `/ws/schema/table/${tableName}/${recordId}?${params}}`
+                url: `/ws/schema/table/${tableName}/${recordId}?${params}`
             };
 
             return _makeRequest(requestOptions);
         }
 
-        function makeRetrieveRecordsRequest({ tableName, query_expression, projection, page, pagesize, sort, sortdescending }) {
+        function retrieveRecords({ tableName, query_expression, projection, page, pagesize, sort, sortdescending }) {
             if (!tableName) {
                 return Promise.reject("makeRetrieveRecordsRequest(): table name not supplied");
             }
@@ -95,25 +140,35 @@ define(function (require) {
             return _makeRequest(requestOptions);
         }
 
-        function makeUpdateRecordRequest({ tableName, recordId, payload = {} }) {
+        function updateRecord({ tableName, recordId, payload = {} }) {
             if (!tableName || !recordId) {
                 return Promise.reject("makeUpdateRecordRequest(): table name or record Id not supplied");
             }
 
             const requestOptions = {
                 method: 'PUT',
-                url: `/ws/schema/table/${tableName}?${params}`,
-                data: {
-                    tables: {}
-                }
+                url: `/ws/schema/table/${tableName}`,
+                data: payload
             };
-
-            tables[tableName] = payload;
-
+            
             return _makeRequest(requestOptions);
         }
 
-        function makeDeleteRecordRequest({ tableName, recordId }) {
+        function massUpdateRecords({ tableName, payload }) {
+            if (!tableName) {
+                return Promise.reject("massUpdateRecords(): table name or record Id not supplied");
+            }
+
+            const requestOptions = {
+                method: 'POST',
+                url: `/ws/schema/table/${tableName}/massupdatebycriteria`,
+                data: payload
+            };
+            
+            return _makeRequest(requestOptions);
+        }
+
+        function deleteRecord({ tableName, recordId }) {
             if (!tableName || !recordId) {
                 return Promise.reject("makeRecordRequest(): table name or record Id not supplied");
             }
@@ -126,7 +181,7 @@ define(function (require) {
             return _makeRequest(requestOptions);
         }
 
-        function makeGetRecordCountRequest({ tableName, query_expression }) {
+        function getRecordCount({ tableName, query_expression }) {
             if (!tableName) {
                 return Promise.reject("makeRetrieveRecordRequest(): table name or record Id not supplied");
             }
@@ -144,12 +199,17 @@ define(function (require) {
         }
 
         return {
-            makeCreateRecordRequest,
-            makeRetrieveRecordRequest,
-            makeRetrieveRecordsRequest,
-            makeUpdateRecordRequest,
-            makeDeleteRecordRequest,
-            makeGetRecordCountRequest
+            getFunctionalAreas,
+            getTablesForFunctionalArea,
+            getAllTables,
+            getTableMetadata,
+            createRecord,
+            retrieveRecord,
+            retrieveRecords,
+            updateRecord,
+            massUpdateRecords,
+            deleteRecord,
+            getRecordCount
         }
     }
 

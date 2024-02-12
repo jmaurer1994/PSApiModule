@@ -3,7 +3,7 @@
   <publisher name="Joe Maurer">
     <contact email="jmaurer@hhsd.org" />
   </publisher>
-  <registration url="https://https://[external resource server hostname]:[port]/oauth2/registerClient">
+  <registration url="https://[external resource server hostname]:[port]/oauth2/registerClient">
     <callback-data>jmaurer/psam</callback-data>
   </registration>
   <oauth base-url="https://[external resource server hostname]:[port]" redirect-uri="/oauth2" allow-auth-code="true" refresh-tokens="true">
